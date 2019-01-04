@@ -1,5 +1,5 @@
 CREATE TABLE "games" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "table_id" int,
   "starttime" timestamp with time zone,
   "endtime" timestamp with time zone,
@@ -8,25 +8,25 @@ CREATE TABLE "games" (
   "score_loser" int );
 
 CREATE TABLE "tables" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "table_name" varchar,
   "status" varchar );
 
 CREATE TABLE "sensors" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "table_id" int,
   "name" varchar,
   "type" varchar,
-  "QR_code" varchar );
+  "qr_code" varchar );
 
 CREATE TABLE "users" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "name" varchar,
   "email" varchar,
   "password" varchar );
 
 CREATE TABLE "teams" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "team_name" varchar );
 
 CREATE TABLE "users_teams" (
@@ -34,7 +34,7 @@ CREATE TABLE "users_teams" (
   "team_id" int );
 
 CREATE TABLE "events" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "happened_at" timestamp with time zone,
   "sensor_id" int,
   "value" decimal );

@@ -8,7 +8,10 @@ sudo apt-get -qy autoremove
 #INSTALL POSTGRESQL + ACCOUNT?
 sudo apt-get -qy install postgresql postgresql-contrib
 sleep 2
-sudo -u postgres createuser smartfoosball
+#sudo -u postgres createuser smartfoosball
+#ALSO NEED TO CHANGE pg_hba.conf to allow connection from app with password (TEMPORARY SOLUTION)
+sudo -i -u postgres psql -c "CREATE USER smartfoosball WITH PASSWORD 'password123';"
 sudo -u postgres createdb smartfoosball
-sudo adduser --disabled-password --gecos "" smartfoosball
+#User should be created manually before installing anything
+#sudo adduser --disabled-password --gecos "" smartfoosball
 sudo -u smartfoosball psql smartfoosball -f model.sql
