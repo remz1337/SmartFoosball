@@ -1,8 +1,11 @@
 import React from "react";
 //import { Line } from "react-chartjs-2";
 
-//const Value = props => <Line data={props.data} options={props.options} />;
-var Value = props; //props => {props.data};
-if ({props.data}) Value = {props.data};
+function Value(props){
+    return <p className="widget">Current Value is {props.data}</p>
+}
+
+
+//const Value = props => <Value data={props.data}/>;
 
 export default Value;

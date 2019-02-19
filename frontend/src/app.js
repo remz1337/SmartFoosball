@@ -29,9 +29,10 @@ export default App;
 */
 
 import React from "react";
-import { render } from "react-dom";
+//import { render } from "react-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Chart from "./chart";
+import Value from "./value";
 //import Value from "./value";
 
 const styles = theme => ({
@@ -124,11 +125,12 @@ class App extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className={classes["chart-container"]}>
-        <Chart data={this.state.lineChartData} options={this.state.lineChartOptions}/>
-        <p>
-          This is the timer value: {this.state.latestValue}
-        </p>
+      <div id="main">
+        <div className={classes["chart-container"]}>
+          <Chart data={this.state.lineChartData} options={this.state.lineChartOptions}/>
+          <Value data={this.state.latestValue}/>
+        </div>
+        <div>TESTY</div>
       </div>
     );
   }
