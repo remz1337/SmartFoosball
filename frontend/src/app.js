@@ -33,7 +33,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Chart from "./chart";
 import Value from "./value";
-//import Value from "./value";
+import "./style.css";
 
 const styles = theme => ({
   "chart-container": {

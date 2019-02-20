@@ -1,0 +1,14 @@
+.container{
+    background: yellow;
+    position: relative;
+    height: 30%;
+    width: 30%;
+}
+
+
+.widget{
+    text-align: center;
+    background: red;
+    border-radius: 15px;
+    padding: 15% 0;
+}

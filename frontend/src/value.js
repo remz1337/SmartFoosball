@@ -1,8 +1,11 @@
 import React from "react";
 //import { Line } from "react-chartjs-2";
+//import './css/widget.css'
 
 function Value(props){
-    return <p className="widget">Current Value is {props.data}</p>
+    return <div className="container">
+                <p className="widget">Current Value is {props.data}</p>
+            </div>
 }
 
 
