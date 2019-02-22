@@ -124,13 +124,21 @@ class App extends React.Component {
   render() {
     const { classes } = this.props;
 
+    //<div className={classes["chart-container"]}>          
+    //<Chart data={this.state.lineChartData} options={this.state.lineChartOptions}/>
     return (
       <div id="main">
-        <div className={classes["chart-container"]}>
-          <Chart data={this.state.lineChartData} options={this.state.lineChartOptions}/>
+        <div className="rowC">          
+          <Value data={this.state.latestValue}/>
+          <Value data={this.state.latestValue}/>
+          <Value data={this.state.latestValue}/>          
+          <Value data={this.state.latestValue}/>  
+          <Value data={this.state.latestValue}/>  
+        </div>
+        <div className="rowC">          
+          <Value data={this.state.latestValue}/>
           <Value data={this.state.latestValue}/>
         </div>
-        <div>TESTY</div>
       </div>
     );
   }

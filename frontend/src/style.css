@@ -1,14 +1,21 @@
+#root{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.rowC{
+    display: flex;
+    flex-direction: row;
+}
+
 .container{
-    background: yellow;
-    position: relative;
-    height: 30%;
     width: 30%;
+    text-align: center;
+    background: rgb(134, 188, 37);
+    border-radius: 1em;
+    padding: 1em;
 }
 
 
-.widget{
-    text-align: center;
-    background: red;
-    border-radius: 15px;
-    padding: 15% 0;
+.widget-value{
+    font-size: 2em;    
 }

@@ -4,7 +4,8 @@ import React from "react";
 
 function Value(props){
     return <div className="container">
-                <p className="widget">Current Value is {props.data}</p>
+                <p>Current Value</p>
+                <p className="widget-value">{props.data}</p>
             </div>
 }
 
