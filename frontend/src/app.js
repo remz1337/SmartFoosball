@@ -31,7 +31,7 @@ export default App;
 import React from "react";
 //import { render } from "react-dom";
 import { withStyles } from "@material-ui/core/styles";
-import Chart from "./chart";
+//import Chart from "./chart";
 import Value from "./value";
 import "./style.css";
 
@@ -122,7 +122,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    //const { classes } = this.props;
 
     //<div className={classes["chart-container"]}>          
     //<Chart data={this.state.lineChartData} options={this.state.lineChartOptions}/>
