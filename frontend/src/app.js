@@ -1,83 +1,27 @@
-/*import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
-
-export default App;
-*/
-
 import React from "react";
-//import { render } from "react-dom";
-import { withStyles } from "@material-ui/core/styles";
-//import Chart from "./chart";
 import Value from "./value";
+import Rectangle from "./rectangle";
 import "./style.css";
 
-const styles = theme => ({
-  "chart-container": {
-    height: 400
-  }
-});
-
 class App extends React.Component {
+
   state = {
-    lineChartData: {
-      labels: [],
-      datasets: [
-        {
-          type: "line",
-          label: "BTC-USD",
-          backgroundColor: "rgba(0, 0, 0, 0)",
-          borderColor: this.props.theme.palette.primary.main,
-          pointBackgroundColor: this.props.theme.palette.secondary.main,
-          pointBorderColor: this.props.theme.palette.secondary.main,
-          borderWidth: "2",
-          lineTension: 0.45,
-          data: []
-        }
-      ]
+    currentScore:{
+      red:1,
+      blue:2
     },
-    lineChartOptions: {
-      responsive: true,
-      maintainAspectRatio: false,
-      tooltips: {
-        enabled: true
-      },
-      scales: {
-        xAxes: [
-          {
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 10
-            }
-          }
-        ]
-      }
+    gamesPlayed:3,
+    goalsScored:4,
+    resetTimer:{
+      secondsRemaining:0,
+      timeLeft:"00:00",
     },
+    noiseLevel:"20 dB", 
     latestValue:0
-  };
+  }
+  intervalHandle;
+  startCountDown = this.startCountDown.bind(this);
+  tick = this.tick.bind(this);
 
   componentDidMount() {
     const subscribe = {
@@ -102,46 +46,89 @@ class App extends React.Component {
         return;
       }
 
-      const oldBtcDataSet = this.state.lineChartData.datasets[0];
-      const newBtcDataSet = { ...oldBtcDataSet };
-      newBtcDataSet.data.push(value.price);
-
-      const newChartData = {
-        ...this.state.lineChartData,
-        datasets: [newBtcDataSet],
-        labels: this.state.lineChartData.labels.concat(
-          new Date().toLocaleTimeString()
-        )
-      };
-      this.setState({ lineChartData: newChartData, latestValue:value.price });
+      this.setState({
+        latestValue: value.price
+       });
     };
+
+    //Start timer
+    this.startCountDown(30);
   }
 
   componentWillUnmount() {
     this.ws.close();
   }
 
-  render() {
-    //const { classes } = this.props;
+  convertSecondsToTimestr(seconds){
+    var res="00:00";
 
-    //<div className={classes["chart-container"]}>          
-    //<Chart data={this.state.lineChartData} options={this.state.lineChartOptions}/>
+    var min = Math.floor(seconds / 60);
+    var sec = seconds - (min * 60);
+
+    if (sec < 10) {
+        sec = "0" + sec;
+    }
+    if (min < 10) {
+        min = "0" + min;
+    }
+
+    res = min + ":" + sec;
+
+    return res;
+  }
+
+  tick() {
+    var remainingSeconds = this.state.resetTimer.secondsRemaining;
+    remainingSeconds--;
+
+    if (remainingSeconds <= 0) {
+      clearInterval(this.intervalHandle);
+    }
+
+    var remainingTime = this.convertSecondsToTimestr(remainingSeconds);
+    
+    var newTimerState = {
+      secondsRemaining:remainingSeconds,
+      timeLeft:remainingTime      
+    };
+
+    this.setState({
+      resetTimer:newTimerState
+    })
+  }
+
+  startCountDown(seconds) {
+    var remainingTime = this.convertSecondsToTimestr(seconds);
+
+    var newTimerState = {
+      secondsRemaining:seconds,
+      timeLeft:remainingTime      
+    };
+
+    this.setState({
+      resetTimer:newTimerState
+    })
+
+    this.intervalHandle = setInterval(this.tick, 1000);
+  }
+
+
+  render() {
     return (
       <div id="main">
         <div className="rowC">          
-          <Value data={this.state.latestValue}/>
-          <Value data={this.state.latestValue}/>
-          <Value data={this.state.latestValue}/>          
-          <Value data={this.state.latestValue}/>  
-          <Value data={this.state.latestValue}/>  
+          <Rectangle data={this.state.latestValue}/>
+          <Value data={this.state.gamesPlayed}/>          
+          <Value data={this.state.goalsScored}/>
         </div>
         <div className="rowC">          
-          <Value data={this.state.latestValue}/>
-          <Value data={this.state.latestValue}/>
+          <Value data={this.state.resetTimer.timeLeft}/>
+          <Value data={this.state.noiseLevel}/>
+          <Rectangle data={this.state.latestValue}/>
         </div>
       </div>
     );
   }
 }
 
-export default withStyles(styles, { withTheme: true })(App);
+export default App;

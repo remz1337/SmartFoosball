@@ -3,27 +3,35 @@
     background: black;
 }
 
-#root{
-    font-family: 'Courier New', Courier, monospace;
-    
-}
-
 .rowC{
     display: flex;
     flex-direction: row;
 }
 
 .container{
-    width: 30%;
+    width: 22%;
+    height: 39vh;
     text-align: center;
     background: rgba(135, 188, 37, 0.5);
-    border-radius: 1em;
-    border-color: black;
-    padding: 1em;
-    margin: 1em;
+    border-radius: 1vmax;
+    padding: 1vh;
+    margin: 3vh;
+}
+
+.rectangle{
+    width: 47%;
+    height: 39vh;
+    text-align: center;
+    background: rgba(135, 188, 37, 0.5);
+    border-radius: 1vmax;
+    padding: 1vh;
+    margin: 3vh;
 }
 
 
+
 .widget-value{
-    font-size: 2em;    
+    font-size: 2vmax;
+    color: white;
+    padding: 8vh 0;
 }
