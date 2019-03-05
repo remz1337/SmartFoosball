@@ -1,6 +1,7 @@
 import React from "react";
 import Value from "./value";
 import Rectangle from "./rectangle";
+//import mqtt from "mqtt";
 import "./style.css";
 
 class App extends React.Component {
@@ -24,24 +25,30 @@ class App extends React.Component {
   tick = this.tick.bind(this);
 
   componentDidMount() {
-    const subscribe = {
+    /*const subscribe = {
       type: "subscribe",
       channels: [
         {
-          name: "ticker",
-          product_ids: ["BTC-USD"]
+          name: "testy",
+          //product_ids: ["BTC-USD"]
         }
       ]
-    };
+    };*/
 
-    this.ws = new WebSocket("wss://ws-feed.gdax.com");
+    //this.ws = new WebSocket("wss://ws-feed.gdax.com");
+    this.ws = new WebSocket("ws://127.0.0.1:1884/testy");
 
     this.ws.onopen = () => {
-      this.ws.send(JSON.stringify(subscribe));
+      console.log("connection open!");
+      this.ws.send("testo");
+      console.log("sent testo");
+      //this.ws.send(JSON.stringify(subscribe));
     };
 
     this.ws.onmessage = e => {
+      console.log("RAW:"+e.data);
       const value = JSON.parse(e.data);
+      console.log("Message:"+value);
       if (value.type !== "ticker") {
         return;
       }
