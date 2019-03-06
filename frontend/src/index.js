@@ -14,9 +14,10 @@ serviceWorker.unregister();
 
 import React from "react";
 import ReactDOM from "react-dom";
+//import { Connector } from 'mqtt-react';
 import App from "./app";
 
-ReactDOM.render(
-  <App/>,
+ReactDOM.render(  
+    <App/>, 
   document.getElementById("root")
 );

@@ -3,6 +3,12 @@ import Value from "./value";
 import Rectangle from "./rectangle";
 //import mqtt from "mqtt";
 import "./style.css";
+//import startConnect from "./test.js";
+//import { Client, Message } from 'react-native-paho-mqtt';
+//import WebSocket from 'react-websocket';
+import Paho from 'paho-mqtt';
+import startConnect from './test.js';
+//import { subscribe } from 'mqtt-react';
 
 class App extends React.Component {
 
@@ -24,46 +30,42 @@ class App extends React.Component {
   startCountDown = this.startCountDown.bind(this);
   tick = this.tick.bind(this);
 
-  componentDidMount() {
-    /*const subscribe = {
-      type: "subscribe",
-      channels: [
-        {
-          name: "testy",
-          //product_ids: ["BTC-USD"]
-        }
-      ]
-    };*/
 
-    //this.ws = new WebSocket("wss://ws-feed.gdax.com");
-    this.ws = new WebSocket("ws://127.0.0.1:1884/testy");
+  //ws = new WebSocket("ws://localhost:1884");
+
+  componentDidMount() {
+    startConnect();
+
+    /*
+    //this.ws = new WebSocket("ws://10.0.2.15:1884");
 
     this.ws.onopen = () => {
-      console.log("connection open!");
-      this.ws.send("testo");
-      console.log("sent testo");
-      //this.ws.send(JSON.stringify(subscribe));
-    };
+      // on connecting, do nothing but log it to the console
+      console.log('connected')
+    }
 
-    this.ws.onmessage = e => {
-      console.log("RAW:"+e.data);
-      const value = JSON.parse(e.data);
-      console.log("Message:"+value);
-      if (value.type !== "ticker") {
-        return;
-      }
+    this.ws.onmessage = evt => {
+      // on receiving a message, add it to the list of messages
+      const message = JSON.parse(evt.data)
+      //this.addMessage(message)
+      console.log("Message:"+message);
+    }
 
+    this.ws.onclose = () => {
+      console.log('disconnected')
+      // automatically try to reconnect on connection loss
       this.setState({
-        latestValue: value.price
-       });
-    };
+        ws: new WebSocket(URL),
+      })
+    }*/
 
     //Start timer
     this.startCountDown(30);
   }
 
   componentWillUnmount() {
-    this.ws.close();
+    console.log("Closing...")
+    //this.ws.close();
   }
 
   convertSecondsToTimestr(seconds){
