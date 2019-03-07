@@ -1,76 +1,129 @@
 import React from "react";
 import Value from "./value";
 import Rectangle from "./rectangle";
-//import mqtt from "mqtt";
 import "./style.css";
-//import startConnect from "./test.js";
-//import { Client, Message } from 'react-native-paho-mqtt';
-//import WebSocket from 'react-websocket';
 import Paho from 'paho-mqtt';
-import startConnect from './test.js';
-//import { subscribe } from 'mqtt-react';
+
+const TIMER=2*60;//2 minutes to score a goal before game resets
 
 class App extends React.Component {
 
   state = {
     currentScore:{
-      red:1,
-      blue:2
+      red:0,
+      blue:0
     },
-    gamesPlayed:3,
-    goalsScored:4,
+    gamesPlayed:0,
+    goalsScored:0,
     resetTimer:{
       secondsRemaining:0,
       timeLeft:"00:00",
     },
-    noiseLevel:"20 dB", 
-    latestValue:0
+    noiseLevel:"0 dB",
+    teamStats:{
+      red:50,
+      blue:50
+    }
   }
   intervalHandle;
   startCountDown = this.startCountDown.bind(this);
   tick = this.tick.bind(this);
 
-
-  //ws = new WebSocket("ws://localhost:1884");
-
   componentDidMount() {
-    startConnect();
 
-    /*
-    //this.ws = new WebSocket("ws://10.0.2.15:1884");
+    /////// FETCH INITIAL STATE FROM BACKEND
+    // (DO LATER)
 
-    this.ws.onopen = () => {
-      // on connecting, do nothing but log it to the console
-      console.log('connected')
+
+    /////// CONNECT TO MQTT BROKER
+    var clientID = "clientID-" + parseInt(Math.random() * 100);
+    var host = "127.0.0.1";//document.getElementById("host").value;
+    var port = "1884";//document.getElementById("port").value;
+
+    this.ws = new Paho.Client(host, Number(port), clientID);
+
+    // Set callback handlers
+    this.ws.onConnectionLost = (responseObject) => {
+      console.log("onConnectionLost: Connection Lost");
+      if (responseObject.errorCode !== 0) {
+          console.log("onConnectionLost: " + responseObject.errorMessage);
+      }
+    }
+    this.ws.onMessageArrived = (message) =>{
+      console.log("onMessageArrived, Topic: " + message.destinationName);
+      console.log("onMessageArrived, Payload: " + message.payloadString);
+
+      if(message.payloadString === "score"){
+        //+1 to ...
+        var newScore = this.state.currentScore;
+        var goals = this.state.goalsScored+1;
+        var games = this.state.gamesPlayed;
+        var resetTime = true;
+
+        if(message.destinationName === "testy/red"){
+          newScore.red++;
+        }
+        else if(message.destinationName === "testy/blue"){
+          newScore.blue++;
+        }
+
+        //Check if a team won / game over
+        if(newScore.red >= 10 || newScore.blue >= 10){
+          games++;
+          newScore.red=0;
+          newScore.blue=0;
+          resetTime = false;
+        }
+
+        this.setState({
+          currentScore:newScore,
+          goalsScored:goals,
+          gamesPlayed:games
+        })
+
+        //restart timer
+        clearInterval(this.intervalHandle);
+        if(resetTime){
+          this.startCountDown(TIMER);
+        }
+        else{//game over wait for next goal to start
+          var remainingTime = this.convertSecondsToTimestr(0);
+
+          var newTimerState = {
+            secondsRemaining:0,
+            timeLeft:remainingTime      
+          };
+
+          this.setState({
+            resetTimer:newTimerState
+          })
+        }
+        
+      }
+      
     }
 
-    this.ws.onmessage = evt => {
-      // on receiving a message, add it to the list of messages
-      const message = JSON.parse(evt.data)
-      //this.addMessage(message)
-      console.log("Message:"+message);
-    }
-
-    this.ws.onclose = () => {
-      console.log('disconnected')
-      // automatically try to reconnect on connection loss
-      this.setState({
-        ws: new WebSocket(URL),
-      })
-    }*/
+    // Connect the client, if successful, call onConnect function
+    this.ws.connect({ 
+        onSuccess: ()=>{
+          var topic = "testy/#";
+          // Subscribe to the requested topic
+          this.ws.subscribe(topic);
+        }
+    });
 
     //Start timer
-    this.startCountDown(30);
+    //this.startCountDown(goals);
   }
 
   componentWillUnmount() {
     console.log("Closing...")
     //this.ws.close();
+    this.ws.disconnect();
   }
 
   convertSecondsToTimestr(seconds){
     var res="00:00";
-
     var min = Math.floor(seconds / 60);
     var sec = seconds - (min * 60);
 
@@ -80,9 +133,7 @@ class App extends React.Component {
     if (min < 10) {
         min = "0" + min;
     }
-
     res = min + ":" + sec;
-
     return res;
   }
 
@@ -92,6 +143,14 @@ class App extends React.Component {
 
     if (remainingSeconds <= 0) {
       clearInterval(this.intervalHandle);
+
+      //Reset current score
+      this.setState({
+        currentScore:{
+          red:0,
+          blue:0
+        }
+      })
     }
 
     var remainingTime = this.convertSecondsToTimestr(remainingSeconds);
@@ -126,14 +185,14 @@ class App extends React.Component {
     return (
       <div id="main">
         <div className="rowC">          
-          <Rectangle data={this.state.latestValue}/>
-          <Value data={this.state.gamesPlayed}/>          
-          <Value data={this.state.goalsScored}/>
+          <Rectangle header="Current Score" data={this.state.currentScore}/>
+          <Value header="Games Played" data={this.state.gamesPlayed}/>          
+          <Value header="Goals Scored" data={this.state.goalsScored}/>
         </div>
         <div className="rowC">          
-          <Value data={this.state.resetTimer.timeLeft}/>
-          <Value data={this.state.noiseLevel}/>
-          <Rectangle data={this.state.latestValue}/>
+          <Value header="Game Reset Timer" data={this.state.resetTimer.timeLeft}/>
+          <Value header="Noise Level" data={this.state.noiseLevel}/>
+          <Rectangle header="Wins" data={this.state.teamStats}/>
         </div>
       </div>
     );

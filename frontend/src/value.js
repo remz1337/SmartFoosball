@@ -4,8 +4,12 @@ import React from "react";
 
 function Value(props){
     return <div className="container">
-                <p>Current Value</p>
-                <p className="widget-value">{props.data}</p>
+                <div>
+                    <p>{props.header}</p>
+                </div>
+                <div className="rowC">
+                    <p className="widget-value">{props.data}</p>
+                </div>
             </div>
 }
 
