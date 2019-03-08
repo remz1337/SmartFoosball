@@ -4,7 +4,7 @@ import Rectangle from "./rectangle";
 import "./style.css";
 import Paho from 'paho-mqtt';
 
-const TIMER=2*60;//2 minutes to score a goal before game resets
+const TIMER=3*60;//3 minutes to score a goal before game resets
 
 class App extends React.Component {
 
@@ -19,10 +19,10 @@ class App extends React.Component {
       secondsRemaining:0,
       timeLeft:"00:00",
     },
-    noiseLevel:"0 dB",
+    noiseLevel:"~",
     teamStats:{
-      red:50,
-      blue:50
+      red:0,
+      blue:0
     }
   }
   intervalHandle;
@@ -59,6 +59,7 @@ class App extends React.Component {
         var goals = this.state.goalsScored+1;
         var games = this.state.gamesPlayed;
         var resetTime = true;
+        var stats = this.state.teamStats;
 
         if(message.destinationName === "testy/red"){
           newScore.red++;
@@ -69,16 +70,23 @@ class App extends React.Component {
 
         //Check if a team won / game over
         if(newScore.red >= 10 || newScore.blue >= 10){
+          if(newScore.red >=10){
+            stats.red++;
+          }
+          else if (newScore.blue>=10){
+            stats.blue++;
+          }
           games++;
           newScore.red=0;
           newScore.blue=0;
-          resetTime = false;
+          resetTime = false;          
         }
 
         this.setState({
           currentScore:newScore,
           goalsScored:goals,
-          gamesPlayed:games
+          gamesPlayed:games,
+          teamStats:stats
         })
 
         //restart timer
