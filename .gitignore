@@ -97,3 +97,5 @@ typings/
 
 # End of https://www.gitignore.io/api/node,visualstudiocode
 
+#ignore NPM RUN BUILD
+build/

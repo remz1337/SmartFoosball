@@ -53,7 +53,7 @@ class App extends React.Component {
       console.log("onMessageArrived, Topic: " + message.destinationName);
       console.log("onMessageArrived, Payload: " + message.payloadString);
 
-      if(message.payloadString === "score"){
+      if(message.payloadString === "goal"){
         //+1 to ...
         var newScore = this.state.currentScore;
         var goals = this.state.goalsScored+1;
@@ -61,10 +61,10 @@ class App extends React.Component {
         var resetTime = true;
         var stats = this.state.teamStats;
 
-        if(message.destinationName === "testy/red"){
+        if(message.destinationName === "smartfoosball/red"){
           newScore.red++;
         }
-        else if(message.destinationName === "testy/blue"){
+        else if(message.destinationName === "smartfoosball/blue"){
           newScore.blue++;
         }
 
@@ -114,7 +114,7 @@ class App extends React.Component {
     // Connect the client, if successful, call onConnect function
     this.ws.connect({ 
         onSuccess: ()=>{
-          var topic = "testy/#";
+          var topic = "smartfoosball/#";
           // Subscribe to the requested topic
           this.ws.subscribe(topic);
         }
