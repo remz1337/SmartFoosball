@@ -13,5 +13,6 @@ sleep 2
 sudo -i -u postgres psql -c "CREATE USER smartfoosball WITH PASSWORD 'password123';"
 sudo -u postgres createdb smartfoosball
 #User should be created manually before installing anything
+#follow this tutorial: https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart
 #sudo adduser --disabled-password --gecos "" smartfoosball
 sudo -u smartfoosball psql smartfoosball -f model.sql

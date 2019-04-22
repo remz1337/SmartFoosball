@@ -7,3 +7,4 @@ sudo apt-get -qy autoremove
 sudo apt-get -qy install nginx
 
 sudo cp nginx.conf /etc/nginx/sites-available/default
+sudo systemctl restart nginx

@@ -1,0 +1,7 @@
+1)Create smartfoosball user manually (adduser + usermod -aG sudo)
+2)Run DB (postgresql) setup
+3)Run mosquitto setup
+4)Run sensors setup
+5)Run backend setup
+6)Run frontend setup
+
