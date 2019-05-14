@@ -17,7 +17,7 @@ tca = adafruit_tca9548a.TCA9548A(i2c)
 vcnl4010_1 = adafruit_vcnl4010.VCNL4010(tca[1])
 vcnl4010_6 = adafruit_vcnl4010.VCNL4010(tca[6])
 
-sensor = adafruit_vcnl4010.VCNL4010(i2c)
+#sensor = adafruit_vcnl4010.VCNL4010(i2c)
  
 # You can optionally adjust the sensor LED current.  The default is 200mA
 # which is the maximum value.  Note this is only set in 10mA increments.
@@ -30,6 +30,9 @@ sensor = adafruit_vcnl4010.VCNL4010(i2c)
 # - FREQUENCY_781K25: 781.25 Khz
 # - FREQUENCY_390K625: 390.625 Khz (default)
 #sensor.frequency = adafruit_vcnl4010.FREQUENCY_3M125  # 3.125 Mhz
+vcnl4010_1.frequency = adafruit_vcnl4010.FREQUENCY_781K25
+vcnl4010_6.frequency = adafruit_vcnl4010.FREQUENCY_781K25
+
 
 CALIBRATION = 300
 total_1 = 0
@@ -72,4 +75,4 @@ while True:
             publish.single(topic="smartfoosball/blue", payload="goal", hostname="127.0.0.1", auth={"username":"smartfoosball", "password":"dfoos123"})
         detection_6 = False
     
-    time.sleep(0.5) 
+    time.sleep(0.01) 
