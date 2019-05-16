@@ -65,14 +65,14 @@ while True:
         detection_1 = True
     else:
         if detection_1 == True:
-            publish.single(topic="smartfoosball/red", payload="goal", hostname="127.0.0.1", auth={"username":"smartfoosball", "password":"dfoos123"})
+            publish.single(topic="smartfoosball/blue", payload="goal", hostname="127.0.0.1", auth={"username":"smartfoosball", "password":"dfoos123"})
         detection_1 = False
 
     if proximity_6 > UPPER_LIMIT_6:         # Sensor 6
         detection_6 = True
     else:
         if detection_6 == True:
-            publish.single(topic="smartfoosball/blue", payload="goal", hostname="127.0.0.1", auth={"username":"smartfoosball", "password":"dfoos123"})
+            publish.single(topic="smartfoosball/red", payload="goal", hostname="127.0.0.1", auth={"username":"smartfoosball", "password":"dfoos123"})
         detection_6 = False
     
     time.sleep(0.01) 
